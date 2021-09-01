@@ -65,8 +65,8 @@
   border-radius: 5px;
   padding: 0.75rem;
   font-size: 1.1rem;
-  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-    Bitstream Vera Sans Mono, Courier New, monospace;
+  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New,
+    monospace;
 }
 
 .grid {
@@ -118,4 +118,87 @@
     width: 100%;
     flex-direction: column;
   }
+}
+
+.formOne {
+  text-align: center;
+}
+
+.titleRe {
+  height: 35px;
+}
+
+.header {
+  background-color: #0b356f;
+  width: 100%;
+  height: 60px;
+}
+
+.first {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+.banner {
+  width: 620px;
+  text-align: center;
+}
+
+.registerplace {
+  width: 620px;
+  text-align: center;
+}
+
+.formplace {
+  background-color: #c41b13;
+  border-radius: 25px;
+  height: 300px;
+}
+
+.linea {
+  border-top: 1px solid white;
+  height: 2px;
+  max-width: 600px;
+  padding: 0;
+  margin: 20px auto 0 auto;
+}
+
+.sentence {
+  color: white;
+  text-align: center;
+}
+
+.colortextfield {
+  background-color: white;
+  border-radius: 10px;
+}
+
+.second {
+  text-align: center;
+}
+
+.linea2 {
+  border-top: 1px solid black;
+  height: 2px;
+  max-width: 1200px;
+  padding: 0;
+  margin: 20px auto 0 auto;
+}
+
+.third {
+  text-align: center;
+}
+
+.forth {
+  text-align: center;
+}
+
+.fifth {
+  text-align: center;
+}
+
+.titles {
+  font-size: large;
 }
