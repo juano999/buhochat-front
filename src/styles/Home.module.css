@@ -6,6 +6,7 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
+  width: 100%;
 }
 
 .main {
@@ -128,11 +129,6 @@
   height: 35px;
 }
 
-.header {
-  background-color: #0b356f;
-  width: 100%;
-  height: 60px;
-}
 
 .first {
   display: flex;
@@ -152,9 +148,10 @@
 }
 
 .formplace {
-  background-color: #c41b13;
+  background-color: #90240E;
   border-radius: 25px;
-  height: 300px;
+  height: 280px;
+  width: 500px;
 }
 
 .linea {
@@ -165,19 +162,6 @@
   margin: 20px auto 0 auto;
 }
 
-.sentence {
-  color: white;
-  text-align: center;
-}
-
-.colortextfield {
-  background-color: white;
-  border-radius: 10px;
-}
-
-.second {
-  text-align: center;
-}
 
 .linea2 {
   border-top: 1px solid black;
@@ -200,5 +184,22 @@
 }
 
 .titles {
-  font-size: large;
+  font-size: 50px;
 }
+
+.perfilImage {
+  border-radius: 500px;
+}
+
+.header {
+  background-color: #0F1642;
+  height: 80px;
+  width: 100%;
+}
+
+.footer {
+  background-color: #0F1642;
+  text-align: center;
+  color: white;
+}
+
