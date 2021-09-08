@@ -21,11 +21,16 @@ export default function MyApp(props) {
   return (
     <React.Fragment>
       <Head>
+<<<<<<< HEAD
         <title>My page</title>
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
+=======
+        <title>BuhoChat</title>
+        <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
+>>>>>>> 0e8a88a0affe8ce16be70ee4693fd7c928455966
       </Head>
       <AuthProvider>
         <ThemeProvider theme={theme}>
