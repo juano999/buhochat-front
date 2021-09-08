@@ -1,34 +1,18 @@
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Container from '@material-ui/core/Container';
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Home from './Home';
+import Header from '../components/header.js';
+import Footer from '../components/footer.js'
+import Body from '../components/body.js';
 
+const ChatPage = () => {
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
+    
 
-  },
+    return (
+        <div>
+            <Header></Header>
+            <Body></Body>
+            <Footer></Footer>
+        </div>
+    );
+};
 
-}));
-
-export default function Index() {
-
-
-
-  const classes = useStyles();
-  return (
-    <React.Fragment>
-      <CssBaseline />
-      {/* header */}
-      <Container maxWidth="lg">
-
-        <Home></Home>
-
-      </Container>
-      {/*Footer*/}
-      { }
-    </React.Fragment>
-  )
-}
+export default ChatPage;
