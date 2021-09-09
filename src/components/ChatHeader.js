@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Header() {
+export default function ChatHeader() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -63,7 +63,7 @@ export default function Header() {
               alt="Logo"
             />
           </Grid>
-          {/*<Grid item xs={6} className={classes.selectOptions}>
+          <Grid item xs={6} className={classes.selectOptions}>
             <FormControl className={classes.formControl}>
               <Divider className={classes.divider} />
               <Button
@@ -85,7 +85,7 @@ export default function Header() {
                 <MenuItem onClick={handleClose}>Cerrar Sesión</MenuItem>
               </Menu>
             </FormControl>
-          </Grid>*/}
+          </Grid>
         </Grid>
       </Container>
     </div>

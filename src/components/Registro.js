@@ -6,6 +6,7 @@ import { Button, Link as MuiLink, TextField } from "@material-ui/core";
 import Link from "next/link";
 import { useAuth } from "@/contexts/auth";
 import withoutAuth from "../hocs/withoutAuth";
+import { makeStyles } from "@material-ui/core/styles";
 
 const schema = yup.object().shape({
   email: yup
@@ -23,6 +24,15 @@ const schema = yup.object().shape({
     .required("Este campo obligatorio"),
 });
 
+const useStyles = makeStyles((theme) => ({
+  fields: {
+    textAlign: "center",
+  },
+  butonColor: {
+    backgroundColor: "black",
+  }
+}));
+
 const RegisterPage = () => {
   const {
     handleSubmit,
@@ -36,6 +46,7 @@ const RegisterPage = () => {
   const [errorsList, setErrorsList] = useState([]);
   const [userInfo, setUserInfo] = useState(null);
   const { register } = useAuth();
+  const classes = useStyles();
 
   const onSubmit = async (formData) => {
     setUserInfo(null);
@@ -75,16 +86,9 @@ const RegisterPage = () => {
   };
 
   return (
-    <div>
-      <div>
-        <p>
-          ¿Ya tienes una cuenta?{" "}
-          <Link href="/login" passHref>
-            <MuiLink>Iniciar sesión</MuiLink>
-          </Link>
-        </p>
-      </div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <div className={classes.fields}>
+      <h1>REGÍSTRATE</h1>
+      <form onSubmit={handleSubmit(onSubmit)} >
         <div>
           <Controller
             name="email"
@@ -168,7 +172,7 @@ const RegisterPage = () => {
             ))}
           </ul>
         )}
-        <Button type="submit" color="primary" variant="contained">
+        <Button type="submit" color="primary" variant="contained" className={classes.butonColor}>
           Registrarme
         </Button>
       </form>
