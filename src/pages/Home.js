@@ -7,7 +7,7 @@ import Grid from "@material-ui/core/Grid";
 import styles from "../styles/Home.module.css";
 import { makeStyles } from "@material-ui/core/styles";
 import Divider from "@material-ui/core/Divider";
-import RegisterPage from "./login";
+import RegisterPage from "@/components/Login";
 
 const useStyles = makeStyles((theme) => ({
   root: {

@@ -176,4 +176,4 @@ const RegisterPage = () => {
   );
 };
 
-export default withoutAuth(RegisterPage);
+export default RegisterPage;

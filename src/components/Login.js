@@ -1,7 +1,7 @@
 import { useForm, Controller } from "react-hook-form";
 import { useState } from "react";
 import { Button, TextField, Link as MuiLink } from "@material-ui/core";
-import styles from "./../styles/Home.module.css";
+import styles from "@/styles/Home.module.css";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useRouter } from "next/router";
@@ -9,13 +9,48 @@ import { useAuth } from "@/contexts/auth";
 import Routes from "../constants/routes";
 import Link from "next/Link";
 import withoutAuth from "../hocs/withoutAuth";
+import { makeStyles } from "@material-ui/core/styles";
+import Registro from "@/components/Registro";
+import Modal from "@material-ui/core/Modal";
+import React from "react";
+
+function rand() {
+  return Math.round(Math.random() * 20) - 10;
+}
 
 const schema = yup.object().shape({
   email: yup.string().email().required(),
   password: yup.string().required(),
 });
 
-const LoginPage = () => {
+function getModalStyle() {
+  const top = 50 + rand();
+  const left = 50 + rand();
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
+
+const useStyles = makeStyles((theme) => ({
+  formplace: {
+    backgroundColor: "#90240E",
+    borderRadius: "20px",
+    height: "290px",
+  },
+  paper: {
+    position: "absolute",
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: "2px solid #000",
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+}));
+
+const Login = () => {
   const {
     handleSubmit,
     formState: { errors },
@@ -31,6 +66,20 @@ const LoginPage = () => {
   const onSubmit = (formData) => setResult(JSON.stringify(formData));
   const { login } = useAuth();
   const router = useRouter();
+  const classes = useStyles();
+  const [modalStyle] = React.useState(getModalStyle);
+  const [open, setOpen] = React.useState(false);
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const body = (
+    <div style={modalStyle} className={classes.paper}>
+      <Registro />
+    </div>
+  );
 
   const onFinishLog = async (formData) => {
     try {
@@ -42,8 +91,9 @@ const LoginPage = () => {
       setUserInfo(response.data);
 
       setResult("User logged in");
+
       reset();
-      router.push(Routes.HOME);
+      // router.push(Routes.HOME);
     } catch (e) {
       console.log("e", e.response);
       const { response } = e;
@@ -68,19 +118,11 @@ const LoginPage = () => {
 
   return (
     <div>
-      {/* <div className={styles.header}>
-                <Image
-                    src={ruta1} // Route of the image file
-                    height={40} // Desired size with correct aspect ratio
-                    width={130} // Desired size with correct aspect ratio
-                    alt="Logo"
-                />
-            </div> */}
       <div className={styles.first}>
         <div className={styles.registerplace}>
           <form
             onSubmit={handleSubmit(onFinishLog)}
-            className={styles.formplace}
+            className={classes.formplace}
           >
             <div>
               <p className={styles.sentence}>Inicia Sesión</p>
@@ -127,10 +169,16 @@ const LoginPage = () => {
               <div className={styles.linea}></div>
               <div className={styles.sentence}>
                 <p>
-                  ¿No tienes cuenta?
-                  <Link href="/registro" passHref>
-                    <MuiLink> Registrate</MuiLink>
-                  </Link>
+                  ¿No tienes cuenta?{" "}
+                  <Button onClick={handleOpen}>Registrate</Button>
+                  <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="simple-modal-title"
+                    aria-describedby="simple-modal-description"
+                  >
+                    {body}
+                  </Modal>
                 </p>
               </div>
             </div>
@@ -158,4 +206,4 @@ const LoginPage = () => {
   );
 };
 
-export default withoutAuth(LoginPage);
+export default Login;
