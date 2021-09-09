@@ -1,18 +1,19 @@
-import Header from '../components/header.js';
-import Footer from '../components/footer.js'
-import Body from '../components/body.js';
+import Header from "@/components/Header";
+import Footer from "@/components/Footer.js";
+import Body from "@/components/Body.js";
+import { useAuth } from "@/contexts/auth";
+import ChatBody from "./chats/ChatBody";
 
-const ChatPage = () => {
+const IndexPage = () => {
+  const { user } = useAuth();
+  return (
+    <div>
+      <Header />
+      {user === null ? "Cargando..." : user === false ? <Body /> : <ChatBody />}
 
-    
-
-    return (
-        <div>
-            <Header></Header>
-            <Body></Body>
-            <Footer></Footer>
-        </div>
-    );
+      <Footer />
+    </div>
+  );
 };
 
-export default ChatPage;
+export default IndexPage;
