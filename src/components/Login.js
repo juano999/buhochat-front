@@ -6,13 +6,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/auth";
-import Routes from "../constants/routes";
-import Link from "next/Link";
-import withoutAuth from "../hocs/withoutAuth";
 import { makeStyles } from "@material-ui/core/styles";
 import Registro from "@/components/Registro";
 import Modal from "@material-ui/core/Modal";
 import React from "react";
+import Divider from "@material-ui/core/Divider";
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -48,6 +46,25 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
+  colortextfield: {
+    backgroundColor: "white",
+    borderRadius: "10px",
+  },
+  divider: {
+    backgroundColor: "transparent",
+    height: "10px",
+  },
+  dividerLine: {
+    backgroundColor: "white",
+    height: "1px",
+  },
+  textRegister: {
+    color: "white",
+  },
+  butonRegister: {
+    color: "white",
+  }
+
 }));
 
 const Login = () => {
@@ -118,14 +135,13 @@ const Login = () => {
 
   return (
     <div>
-      <div className={styles.first}>
-        <div className={styles.registerplace}>
+        <div >
           <form
             onSubmit={handleSubmit(onFinishLog)}
             className={classes.formplace}
           >
             <div>
-              <p className={styles.sentence}>Inicia Sesión</p>
+              <Divider className={classes.divider}/>
               <Controller
                 name="email"
                 control={control}
@@ -133,7 +149,7 @@ const Login = () => {
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    className={styles.colortextfield}
+                    className={classes.colortextfield}
                     label="Correo electrónico"
                     variant="filled"
                     type="email"
@@ -152,7 +168,7 @@ const Login = () => {
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    className={styles.colortextfield}
+                    className={classes.colortextfield}
                     label="Contraseña"
                     variant="filled"
                     type="password"
@@ -166,11 +182,12 @@ const Login = () => {
               <Button type="submit" variant="contained" color="white">
                 Iniciar Sesión
               </Button>
-              <div className={styles.linea}></div>
-              <div className={styles.sentence}>
-                <p>
+              <Divider className={classes.divider}/>
+              <Divider className={classes.dividerLine}/>
+              <div>
+                <p className={classes.textRegister}>
                   ¿No tienes cuenta?{" "}
-                  <Button onClick={handleOpen}>Registrate</Button>
+                  <Button onClick={handleOpen} className={classes.butonRegister}>Registrate</Button>
                   <Modal
                     open={open}
                     onClose={handleClose}
@@ -184,7 +201,6 @@ const Login = () => {
             </div>
           </form>
         </div>
-      </div>
       {/* <div className={styles.linea2}></div>
             <div className = {styles.second}>
                 <p className={styles.titles}>!Conoce personas a sol un click!</p>
