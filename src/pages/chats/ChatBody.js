@@ -10,6 +10,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import TextField from "@material-ui/core/TextField";
 import AttachFileIcon from "@material-ui/icons/AttachFile";
 import SendIcon from "@material-ui/icons/Send";
+import ChatList from "@/components/ChatList";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -92,6 +93,11 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
     height: "580px",
   },
+  list: {
+    overflowY: "scroll",
+    height: "100%",
+    width: "100%",
+  }
 }));
 
 export default function ChatBody() {
@@ -111,32 +117,8 @@ export default function ChatBody() {
               </Grid>
               <Grid item xs={12} className={classes.contacts}>
                 <Divider className={classes.divider} />
-                <Grid container spacing={1}>
-                  <Grid item xs={12} className={classes.contactsPosition}>
-                    <PersonIcon fontSize="large"></PersonIcon> Jorgew98
-                  </Grid>
-                  <Divider className={classes.divider} />
-                  <Grid item xs={12} className={classes.contactsPosition}>
-                    <PersonIcon fontSize="large"></PersonIcon>Bernabeus
-                  </Grid>
-                  <Grid item xs={12} className={classes.contactsPosition}>
-                    <PersonIcon fontSize="large"></PersonIcon> Juan432
-                  </Grid>
-                  <Grid item xs={12} className={classes.contactsPosition}>
-                    <PersonIcon fontSize="large"></PersonIcon> Maria342
-                  </Grid>
-                  <Grid item xs={12} className={classes.contactsPosition}>
-                    <PersonIcon fontSize="large"></PersonIcon> Lucyrt33
-                  </Grid>
-                  <Grid item xs={12} className={classes.contactsPosition}>
-                    <PersonIcon fontSize="large"></PersonIcon> vane8889
-                  </Grid>
-                  <Grid item xs={12} className={classes.contactsPosition}>
-                    <PersonIcon fontSize="large"></PersonIcon> Angeles7874
-                  </Grid>
-                  <Grid item xs={12} className={classes.newContact}>
-                    <Button>Nuevo usuario </Button>
-                  </Grid>
+                <Grid container spacing={1} className={classes.list}>
+                  <ChatList></ChatList>
                 </Grid>
               </Grid>
             </Grid>
