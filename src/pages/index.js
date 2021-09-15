@@ -1,34 +1,20 @@
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Container from '@material-ui/core/Container';
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Home from './Home';
+import Header from "@/components/Header";
+import Footer from "@/components/Footer.js";
+import Body from "@/components/Body.js";
+import { useAuth } from "@/contexts/auth";
+import ChatBody from "./chats/ChatBody";
+import ChatHeader from "@/components/ChatHeader.js";
+import Loading from "@/components/Loading";
 
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-
-  },
-
-}));
-
-export default function Index() {
-
-
-
-  const classes = useStyles();
+const IndexPage = () => {
+  const { user } = useAuth();
   return (
-    <React.Fragment>
-      <CssBaseline />
-      {/* header */}
-      <Container maxWidth="lg">
+    <div>
+      {user === null ? " " : user === false ? <Header /> : <ChatHeader />}
+      {user === null ? <Loading /> : user === false ? <Body /> : <ChatBody />}
+      {user === null ? " " : user === false ? <Footer /> : <Footer />}
+    </div>
+  );
+};
 
-        <Home></Home>
-
-      </Container>
-      {/*Footer*/}
-      { }
-    </React.Fragment>
-  )
-}
+export default IndexPage;
