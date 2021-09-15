@@ -5,11 +5,10 @@ import PersonIcon from "@material-ui/icons/Person";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
-import {useState, useEffect} from 'react'; 
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import api from "../api/index";
 import useSWR from "swr";
-
 
 const fetcher = (url) => api.get(url).then((res) => res.data);
 
@@ -25,8 +24,8 @@ const useStyles = makeStyles((theme) => ({
   },
   newContact: {
     height: "auto",
-    position:"absolute",
-    bottom: "0", 
+    position: "absolute",
+    bottom: "0",
     width: "100%",
     padding: "20px",
   },
@@ -42,20 +41,18 @@ const useStyles = makeStyles((theme) => ({
 const ChatList = () => {
   const classes = useStyles();
   const router = useRouter();
-  const [ data, setData ] = useSWR("/users/random", fetcher);
+  const { data, error } = useSWR("/users/random", fetcher);
   const [users, setUsers] = useState([]);
 
   const [nextUser, setNextUser] = useState(0);
-  useEffect(()=>{
-    
-  }, [data]);
-  
+  useEffect(() => {}, [data]);
+
   const handleActivity = () => {
-    setData((prevState) => {
-      const newUser = useSWR("/users/random", fetcher);
-      console.log(newUser);
-      return [...prevState, newUser];
-    })
+    // setData((prevState) => {
+    //   //const newUser = useSWR("/users/random", fetcher);
+    //   console.log(newUser);
+    //   return [...prevState, newUser];
+    // });
     /*
     if(nextUser < data.length){
       setUsers([...users, data[nextUser]]);
@@ -63,26 +60,26 @@ const ChatList = () => {
     }*/
   };
 
-
   return (
     <div className={classes.container}>
-      {data.map((user) => (
+      {users.map((user) => (
         <div key={user.id}>
-         <Grid item xs={12} className={classes.contactsPosition}>
-        <PersonIcon fontSize="large"></PersonIcon> {user.nickName}
-      </Grid>
-      <Divider className={classes.divider} /> 
+          <Grid item xs={12} className={classes.contactsPosition}>
+            <PersonIcon fontSize="large"></PersonIcon> {user.nickName}
+          </Grid>
+          <Divider className={classes.divider} />
         </div>
       ))}
-      
+
       <Grid item xs={12} className={classes.newContact}>
-      <Button color="primary"
-      className={classes.buttonStyle}
-      variant='contained'
-      onClick={handleActivity}
-      >
-        Nuevo usuario
-      </Button>
+        <Button
+          color="primary"
+          className={classes.buttonStyle}
+          variant="contained"
+          onClick={handleActivity}
+        >
+          Nuevo usuario
+        </Button>
       </Grid>
     </div>
   );
