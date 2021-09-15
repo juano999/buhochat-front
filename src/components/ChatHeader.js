@@ -10,6 +10,7 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
+import Logout from "@/components/Logout";
 
 const useStyles = makeStyles((theme) => ({
   selectOptions: {
@@ -82,7 +83,9 @@ export default function ChatHeader() {
                 onClose={handleClose}
               >
                 <MenuItem onClick={handleClose}>Ver perfil</MenuItem>
-                <MenuItem onClick={handleClose}>Cerrar Sesión</MenuItem>
+                <MenuItem onClick={handleClose}>
+                  <Logout />
+                </MenuItem>
               </Menu>
             </FormControl>
           </Grid>
