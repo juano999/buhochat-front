@@ -5,8 +5,4 @@ const api = axios.create({
     withCredentials: true,
 });
 
-<<<<<<< HEAD
 export default api;
-=======
-export default api;
->>>>>>> 98588c27dbfdd3539a3d900875a09168ee1aae9d

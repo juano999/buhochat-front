@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -11,6 +11,7 @@ import TextField from "@material-ui/core/TextField";
 import AttachFileIcon from "@material-ui/icons/AttachFile";
 import SendIcon from "@material-ui/icons/Send";
 import ChatList from "@/components/ChatList";
+import ChatView from "@/components/ChatView";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -102,9 +103,17 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ChatBody() {
   const classes = useStyles();
+  const [userToShow, setUserToShow] = useState(null);
 
+  // handleChangeUser
+  // setUserToShow(idUser)
+  const handleChangeUser = (idUser) => {
+    console.log("useridTOSHOW", idUser);
+    setUserToShow(idUser)
+  }
   return (
     <div className={classes.root}>
+
       <Grid container spacing={3}>
         <Grid item xs={4} className={classes.Box}>
           <Paper className={classes.paper}>
@@ -118,7 +127,8 @@ export default function ChatBody() {
               <Grid item xs={12} className={classes.contacts}>
                 <Divider className={classes.divider} />
                 <Grid container spacing={1} className={classes.list}>
-                  <ChatList></ChatList>
+                  <ChatList onChangeUser={handleChangeUser} />
+
                 </Grid>
               </Grid>
             </Grid>
@@ -138,7 +148,9 @@ export default function ChatBody() {
               </Grid>
               <Grid item xs={12} className={classes.messages}>
                 <Divider className={classes.divider} />
+                <ChatView userId={userToShow} />
               </Grid>
+
               <Grid item xs={10} className={classes.sendMessages}>
                 <Divider className={classes.divider2} />
                 <TextField
@@ -148,6 +160,7 @@ export default function ChatBody() {
                   className={classes.colorText}
                 />
               </Grid>
+
               <Grid item xs={1} className={classes.sendMultimedia}>
                 <Divider className={classes.divider3} />
                 <AttachFileIcon fontSize="large"></AttachFileIcon>

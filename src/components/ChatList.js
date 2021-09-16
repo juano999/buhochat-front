@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     bottom: "0",
     width: "100%",
-    padding: "20px",
+
   },
   container: {
     width: "100%",
@@ -35,36 +35,49 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonStyle: {
     width: "100%",
+    color: "black",
+    backgroundColor: "#D2D4C4"
   },
 }));
 
-const ChatList = () => {
+const ChatList = ({ onChangeUser }) => {
   const classes = useStyles();
   const router = useRouter();
   const { data, error } = useSWR("/users/random", fetcher);
   const [users, setUsers] = useState([]);
 
   const [nextUser, setNextUser] = useState(0);
-  useEffect(() => {}, [data]);
+  useEffect(() => {
+    console.log("userslist", users);
+  }, [data]);
 
-  const handleActivity = () => {
-    // setData((prevState) => {
-    //   //const newUser = useSWR("/users/random", fetcher);
-    //   console.log(newUser);
-    //   return [...prevState, newUser];
-    // });
-    /*
-    if(nextUser < data.length){
-      setUsers([...users, data[nextUser]]);
-      setNextUser(nextUser+1);
-    }*/
-  };
+  async function randomUser() {
+    try {
+
+
+      const res = await api.get(`/users/random`);
+      console.log(res);
+      const newUser = res.data
+
+      setUsers((prevState) => {
+        console.log("usuario nuevo", newUser)
+        return [...prevState, newUser]
+
+      })
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const handleNextUser = () => {
+    randomUser();
+  }
 
   return (
     <div className={classes.container}>
       {users.map((user) => (
         <div key={user.id}>
-          <Grid item xs={12} className={classes.contactsPosition}>
+          <Grid item xs={12} className={classes.contactsPosition} onClick={() => onChangeUser(user.id)}>
             <PersonIcon fontSize="large"></PersonIcon> {user.nickName}
           </Grid>
           <Divider className={classes.divider} />
@@ -76,7 +89,7 @@ const ChatList = () => {
           color="primary"
           className={classes.buttonStyle}
           variant="contained"
-          onClick={handleActivity}
+          onClick={handleNextUser}
         >
           Nuevo usuario
         </Button>

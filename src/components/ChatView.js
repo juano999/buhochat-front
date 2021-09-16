@@ -6,34 +6,60 @@ import { useEffect, useState } from "react";
 
 
 
-const ChatView = () => {
+const ChatView = ({ userId }) => {
     const [messages, setMessages] = useState([]);
+    const [chats, setChats] = useState([])
+    const [activeChat, setActiveChat] = useState();
+
 
 
     useEffect(() => {
         //console.log("chatid", chatId)
 
-        messagesPopulation();
+
+        //chatsFetcher()
 
 
     }, [])
+    useEffect(() => {
+        //console.log("chatid", chatId)
 
-    async function messagesPopulation() {
+        chats.map((chat) => {
+
+        })
+
+
+
+    }, [chats])
+
+    async function messagesPopulation(id) {
         try {
-            let messages = [];
-            const res = await fetch(`http://localhost:8000/api/chat/3/messages`, {   // se obtiene los mensajes del chat con id 3
-                headers: {
-                    Authorization:
-                        "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTYzMTEzOTE1MSwiZXhwIjoxNjMxMTQyNzUxLCJuYmYiOjE2MzExMzkxNTEsImp0aSI6Im5ZcUFPcFNDaTNBZkozZksiLCJzdWIiOjEsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.leVQ7uWZmxAi-ax0jfUhXQgqF04xmBcOtc4wwMLusNE",
-                },
-            });
 
-            messages = await res.json()
-            console.log("mensajes", messages)
+            let messages = [];
+            const res = await api.get(`/chat/${id}/messages`);
+            console.log(res);
+            messages = await res.data
+            console.log("mensajes", res.data)
             setMessages(messages)
         } catch (e) {
-            console.log(e);
+            console.log(e)
         }
+
+    }
+    async function chatsFetcher() {
+        try {
+
+            let chats = [];
+            const res = await api.get(`/chats`);
+            console.log(res);
+            chats = await res.data
+            console.log("chats", res.data)
+            setChats(chats);
+
+        } catch (e) {
+            console.log(e)
+        }
+
     }
 
 
@@ -53,6 +79,7 @@ const ChatView = () => {
                     </div>
                 </div>
             ))}
+
         </div>
     );
 }
