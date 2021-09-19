@@ -15,7 +15,7 @@ import ChatView from "@/components/ChatView";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
+    height: "90vh"
   },
   paper: {
     padding: theme.spacing(1),
@@ -29,10 +29,12 @@ const useStyles = makeStyles((theme) => ({
   },
   colorAll: {
     backgroundColor: "#D2D4C4",
+    height: "40px"
   },
   colorFriends: {
     backgroundColor: "#2058AE",
     color: "#FFFFFF",
+    height: "40px"
   },
   contacts: {
     backgroundColor: "#2058AE",
@@ -50,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
 
   messageSpace: {
     backgroundColor: "#9CB8E2",
-    height: "70px",
+    height: "89vh",
   },
   friendProfile: {
     textAlign: "left",
@@ -88,91 +90,55 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#9CB8E2",
     height: "10px",
   },
-  Box: {
-    padding: theme.spacing(1),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-    height: "580px",
-  },
+
   list: {
-    overflowY: "scroll",
-    height: "100%",
+    borderTop: "1px solid white",
     width: "100%",
+  },
+  selectChatBox: {
+    backgroundColor: "#2058AE",
+    height: "86vh",
+
   }
+
 }));
 
 export default function ChatBody() {
   const classes = useStyles();
-  const [userToShow, setUserToShow] = useState(null);
+  const [chatToShow, setChatToShow] = useState(null);
 
   // handleChangeUser
   // setUserToShow(idUser)
-  const handleChangeUser = (idUser) => {
-    console.log("useridTOSHOW", idUser);
-    setUserToShow(idUser)
+  const handleChangeUser = (chat) => {
+
+    setChatToShow(chat)
   }
   return (
-    <div className={classes.root}>
 
-      <Grid container spacing={3}>
-        <Grid item xs={4} className={classes.Box}>
-          <Paper className={classes.paper}>
-            <Grid container spacing={1}>
-              <Grid item xs={6} className={classes.colorAll}>
-                <Button>Todos </Button>
-              </Grid>
-              <Grid item xs={6} className={classes.colorFriends}>
-                <Button>Amigos </Button>
-              </Grid>
-              <Grid item xs={12} className={classes.contacts}>
-                <Divider className={classes.divider} />
-                <Grid container spacing={1} className={classes.list}>
-                  <ChatList onChangeUser={handleChangeUser} />
 
-                </Grid>
-              </Grid>
-            </Grid>
-          </Paper>
+    <Grid container spacing={0} className={classes.root}>
+      <Grid container item xs={2} md={4} className={classes.selectChatBox}>
+        <Grid item xs={6} md={6} className={classes.colorAll}>
+          <Button>Todos </Button>
         </Grid>
-        <Grid item xs={8} className={classes.Box}>
-          <Paper className={classes.paper}>
-            <Grid container spacing={1} className={classes.messageSpace}>
-              <Grid item xs={6} className={classes.friendProfile}>
-                <Divider className={classes.divider3} />
-                <PersonIcon fontSize="large"></PersonIcon> Bernabeus
-              </Grid>
-              <Grid item xs={6} className={classes.addFriend}>
-                <Divider className={classes.divider3} />
-                <PersonAddIcon fontSize="large"></PersonAddIcon>
-                <MoreVertIcon fontSize="large"></MoreVertIcon>
-              </Grid>
-              <Grid item xs={12} className={classes.messages}>
-                <Divider className={classes.divider} />
-                <ChatView userId={userToShow} />
-              </Grid>
-
-              <Grid item xs={10} className={classes.sendMessages}>
-                <Divider className={classes.divider2} />
-                <TextField
-                  id="filled-uncontrolled"
-                  label="Escribe un mensaje aquí"
-                  variant="outlined"
-                  className={classes.colorText}
-                />
-              </Grid>
-
-              <Grid item xs={1} className={classes.sendMultimedia}>
-                <Divider className={classes.divider3} />
-                <AttachFileIcon fontSize="large"></AttachFileIcon>
-              </Grid>
-              <Grid item xs={1} className={classes.sendMultimedia}>
-                <Divider className={classes.divider3} />
-                <SendIcon fontSize="large"></SendIcon>
-              </Grid>
-            </Grid>
-          </Paper>
+        <Grid item xs={6} md={6} className={classes.colorFriends}>
+          <Button>Amigos </Button>
         </Grid>
+        <Divider className={classes.divider} />
+
+        <Grid item xs={12} container spacing={0} className={classes.list}>
+          <ChatList onChangeUser={handleChangeUser} />
+        </Grid>
+
       </Grid>
-    </div>
+
+
+      <Grid container spacing={0} md={8} className={classes.messageSpace}>
+        <ChatView chat={chatToShow} />
+      </Grid>
+
+
+    </Grid>
+
   );
 }

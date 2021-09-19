@@ -24,16 +24,19 @@ const useStyles = makeStyles((theme) => ({
   },
   newContact: {
     height: "auto",
-    position: "absolute",
-    bottom: "0",
+
+
     width: "100%",
 
   },
-  container: {
-    width: "100%",
-    position: "relative",
+  list: {
+    overflowY: "scroll",
+    height: "77vh"
   },
-  buttonStyle: {
+  listItem: {
+
+  },
+  newUserBtn: {
     width: "100%",
     color: "black",
     backgroundColor: "#D2D4C4"
@@ -43,58 +46,64 @@ const useStyles = makeStyles((theme) => ({
 const ChatList = ({ onChangeUser }) => {
   const classes = useStyles();
   const router = useRouter();
-  const { data, error } = useSWR("/users/random", fetcher);
   const [users, setUsers] = useState([]);
+  const [chats, setChats] = useState([]);
+  const [newRandom, setNewRandom] = useState(0);
 
-  const [nextUser, setNextUser] = useState(0);
   useEffect(() => {
-    console.log("userslist", users);
-  }, [data]);
+
+    chatsPopulation();
+  }, [newRandom]);
 
   async function randomUser() {
     try {
-
-
       const res = await api.get(`/users/random`);
       console.log(res);
       const newUser = res.data
-
-      setUsers((prevState) => {
-        console.log("usuario nuevo", newUser)
-        return [...prevState, newUser]
-
-      })
     } catch (e) {
       console.log(e)
     }
   }
-
   const handleNextUser = () => {
     randomUser();
+    if (newRandom == 0) {
+      setNewRandom(1);
+    }
+    if (newRandom == 1) {
+      setNewRandom(0);
+    }
+  }
+  async function chatsPopulation() {
+    const res = await api.get("/chats")
+    console.log(res.data)
+    const chats = res.data;
+    setChats(res.data);
+
   }
 
   return (
-    <div className={classes.container}>
-      {users.map((user) => (
-        <div key={user.id}>
-          <Grid item xs={12} className={classes.contactsPosition} onClick={() => onChangeUser(user.id)}>
-            <PersonIcon fontSize="large"></PersonIcon> {user.nickName}
-          </Grid>
-          <Divider className={classes.divider} />
-        </div>
-      ))}
+    <Grid container >
+      <Grid spacing={0} md={12} className={classes.list}>
+        {chats.map((chat) => (
+          <Grid md={12} key={chat.id} >
+            <Grid item xs={12} md={12} className={classes.contactsPosition} onClick={() => onChangeUser(chat)}>
+              <PersonIcon fontSize="large"></PersonIcon> {chat.user_id_2}
+            </Grid>
 
-      <Grid item xs={12} className={classes.newContact}>
-        <Button
-          color="primary"
-          className={classes.buttonStyle}
-          variant="contained"
-          onClick={handleNextUser}
-        >
-          Nuevo usuario
-        </Button>
+          </Grid>
+        ))}
       </Grid>
-    </div>
+
+      <Button
+        color="primary"
+        className={classes.newUserBtn}
+        variant="contained"
+        onClick={handleNextUser}
+      >
+        Nuevo usuario
+      </Button>
+
+    </Grid>
   );
 };
 

@@ -6,6 +6,8 @@ import ChatBody from "./chats/ChatBody";
 import ChatHeader from "@/components/ChatHeader.js";
 import Loading from "@/components/Loading";
 
+
+
 const IndexPage = () => {
   const { user } = useAuth();
   return (

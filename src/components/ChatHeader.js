@@ -1,5 +1,5 @@
 import Container from "@material-ui/core/Container";
-import React from "react";
+import React, { useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
 import styles from "@/styles/Home.module.css";
 import Image from "next/image";
@@ -11,6 +11,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import Logout from "@/components/Logout";
+import { useState } from "react";
+import User from "../api/user";
 
 const useStyles = makeStyles((theme) => ({
   selectOptions: {
@@ -43,6 +45,11 @@ const useStyles = makeStyles((theme) => ({
 export default function ChatHeader() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [authUser, setAuthUser] = useState(null)
+
+  useEffect(() => {
+    getAuthenticatedUser();
+  }, [])
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -51,6 +58,33 @@ export default function ChatHeader() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  async function getAuthenticatedUser() {
+    try {
+      const response = await User.getAuthenticatedUser();
+      console.log("response user in header", response);
+      setAuthUser(response.data)
+      return response;
+    } catch (error) {
+
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+        return error.response;
+      } else if (error.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+        console.log(error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log("Error", error.message);
+      }
+      console.log(error.config);
+    }
+  }
 
   return (
     <div className={styles.header}>
@@ -73,7 +107,7 @@ export default function ChatHeader() {
                 onClick={handleClick}
                 className={classes.colorMenu}
               >
-                Vicky678
+                {authUser ? authUser.nickName : ''}
               </Button>
               <Menu
                 id="simple-menu"
