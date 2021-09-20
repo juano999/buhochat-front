@@ -5,11 +5,10 @@ import PersonIcon from "@material-ui/icons/Person";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
-import {useState, useEffect} from 'react'; 
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import api from "../api/index";
 import useSWR from "swr";
-
 
 const fetcher = (url) => api.get(url).then((res) => res.data);
 
@@ -25,66 +24,86 @@ const useStyles = makeStyles((theme) => ({
   },
   newContact: {
     height: "auto",
-    position:"absolute",
-    bottom: "0", 
+
+
     width: "100%",
-    padding: "20px",
+
   },
-  container: {
-    width: "100%",
-    position: "relative",
+  list: {
+    overflowY: "scroll",
+    height: "77vh"
   },
-  buttonStyle: {
+  listItem: {
+
+  },
+  newUserBtn: {
     width: "100%",
+    color: "black",
+    backgroundColor: "#D2D4C4"
   },
 }));
 
-const ChatList = () => {
+const ChatList = ({ onChangeUser }) => {
   const classes = useStyles();
   const router = useRouter();
-  const [ data, setData ] = useSWR("/users/random", fetcher);
   const [users, setUsers] = useState([]);
+  const [chats, setChats] = useState([]);
+  const [newRandom, setNewRandom] = useState(0);
 
-  const [nextUser, setNextUser] = useState(0);
-  useEffect(()=>{
-    
-  }, [data]);
-  
-  const handleActivity = () => {
-    setData((prevState) => {
-      const newUser = useSWR("/users/random", fetcher);
-      console.log(newUser);
-      return [...prevState, newUser];
-    })
-    /*
-    if(nextUser < data.length){
-      setUsers([...users, data[nextUser]]);
-      setNextUser(nextUser+1);
-    }*/
-  };
+  useEffect(() => {
 
+    chatsPopulation();
+  }, [newRandom]);
+
+  async function randomUser() {
+    try {
+      const res = await api.get(`/users/random`);
+      console.log(res);
+      const newUser = res.data
+    } catch (e) {
+      console.log(e)
+    }
+  }
+  const handleNextUser = () => {
+    randomUser();
+    if (newRandom == 0) {
+      setNewRandom(1);
+    }
+    if (newRandom == 1) {
+      setNewRandom(0);
+    }
+  }
+  async function chatsPopulation() {
+    const res = await api.get("/chats")
+    console.log(res.data)
+    const chats = res.data;
+    setChats(res.data);
+
+  }
 
   return (
-    <div className={classes.container}>
-      {data.map((user) => (
-        <div key={user.id}>
-         <Grid item xs={12} className={classes.contactsPosition}>
-        <PersonIcon fontSize="large"></PersonIcon> {user.nickName}
-      </Grid>
-      <Divider className={classes.divider} /> 
-        </div>
-      ))}
-      
-      <Grid item xs={12} className={classes.newContact}>
-      <Button color="primary"
-      className={classes.buttonStyle}
-      variant='contained'
-      onClick={handleActivity}
+    <Grid container >
+      <Grid spacing={0} md={12} className={classes.list}>
+        {chats.map((chat) => (
+          <Grid md={12} key={chat.id} >
+            <Grid item xs={12} md={12} className={classes.contactsPosition} onClick={() => onChangeUser(chat)}>
+              <PersonIcon fontSize="large"></PersonIcon> {chat.user_id_2}
+            </Grid>
 
+          </Grid>
+        ))}
+      </Grid>
+
+      <Button
+        color="primary"
+        className={classes.newUserBtn}
+        variant="contained"
+        onClick={handleNextUser}
+      >
         Nuevo usuario
       </Button>
-      </Grid>
-    </div>
+
+    </Grid>
   );
 };
 
