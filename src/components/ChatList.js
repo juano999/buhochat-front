@@ -80,7 +80,7 @@ const ChatList = () => {
       className={classes.buttonStyle}
       variant='contained'
       onClick={handleActivity}
-      >
+
         Nuevo usuario
       </Button>
       </Grid>
