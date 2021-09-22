@@ -1,6 +1,5 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
 import PersonIcon from "@material-ui/icons/Person";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
@@ -8,7 +7,6 @@ import Grid from "@material-ui/core/Grid";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import api from "../api/index";
-import useSWR from "swr";
 
 const fetcher = (url) => api.get(url).then((res) => res.data);
 
