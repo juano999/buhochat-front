@@ -12,6 +12,7 @@ import AttachFileIcon from "@material-ui/icons/AttachFile";
 import SendIcon from "@material-ui/icons/Send";
 import ChatList from "@/components/ChatList";
 import ChatView from "@/components/ChatView";
+import ChatListFriends from '@/components/ChatListFriends';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -107,12 +108,15 @@ export default function ChatBody() {
   const classes = useStyles();
   const [chatToShow, setChatToShow] = useState(null);
 
+
   // handleChangeUser
   // setUserToShow(idUser)
   const handleChangeUser = (chat) => {
 
     setChatToShow(chat)
   }
+
+
   return (
 
 
@@ -122,12 +126,14 @@ export default function ChatBody() {
           <Button>Todos </Button>
         </Grid>
         <Grid item xs={6} md={6} className={classes.colorFriends}>
-          <Button>Amigos </Button>
+          <Button >Amigos </Button>
         </Grid>
         <Divider className={classes.divider} />
 
         <Grid item xs={12} container spacing={0} className={classes.list}>
           <ChatList onChangeUser={handleChangeUser} />
+          {/*<ChatListFriends/>*/}
+
         </Grid>
 
       </Grid>

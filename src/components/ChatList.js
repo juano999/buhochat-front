@@ -73,7 +73,7 @@ const ChatList = ({ onChangeUser }) => {
   }
   async function chatsPopulation() {
     const res = await api.get("/chats")
-    console.log(res.data)
+    console.log('Respuesta Aleatorio: ',res.data)
     const chats = res.data;
     setChats(res.data);
 
