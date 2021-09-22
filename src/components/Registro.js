@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
   butonColor: {
     backgroundColor: "black",
-  }
+  },
 }));
 
 const RegisterPage = () => {
@@ -55,14 +55,20 @@ const RegisterPage = () => {
     try {
       const userData = {
         ...formData,
-        role: "ROLE_USER",
       };
-      const response = await register(userData);
-      console.log("response", response);
-      setUserInfo(response.data);
 
-      setResult("Usuario registrado correctamente");
-      reset();
+      const str = userData.email;
+      const regex = new RegExp(".*@epn.edu.ec$");
+
+      if (regex.test(str)) {
+        const response = await register(userData);
+        setUserInfo(response.data);
+        setResult("Usuario registrado correctamente");
+        reset();
+      } else {
+        alert("Este correo no pertence a la Escuela Polotécnica Nacional");
+        setResult("Tu correo debe tener la extención epn.edu.ec");
+      }
     } catch (e) {
       console.log("e", e.response);
       const { response } = e;
@@ -88,7 +94,7 @@ const RegisterPage = () => {
   return (
     <div className={classes.fields}>
       <h1>REGÍSTRATE</h1>
-      <form onSubmit={handleSubmit(onSubmit)} >
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <Controller
             name="email"
@@ -158,6 +164,7 @@ const RegisterPage = () => {
         </div>
 
         <p>{result}</p>
+        {console.log("resultado", result)}
         {userInfo && (
           <div>
             <div>Nombre: {userInfo.name}</div>
@@ -172,7 +179,12 @@ const RegisterPage = () => {
             ))}
           </ul>
         )}
-        <Button type="submit" color="primary" variant="contained" className={classes.butonColor}>
+        <Button
+          type="submit"
+          color="primary"
+          variant="contained"
+          className={classes.butonColor}
+        >
           Registrarme
         </Button>
       </form>
