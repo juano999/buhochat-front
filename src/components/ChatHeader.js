@@ -13,6 +13,23 @@ import Divider from "@material-ui/core/Divider";
 import Logout from "@/components/Logout";
 import { useState } from "react";
 import User from "../api/user";
+import Perfil from "@/components/ChatProfile";
+import Modal from "@material-ui/core/Modal";
+
+function rand() {
+  return Math.round(Math.random() * 20) - 10;
+}
+
+function getModalStyle() {
+  const top = 50 + rand();
+  const left = 50 + rand();
+
+  return {
+    top: `${top}%`,
+    left: `${left}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
 
 const useStyles = makeStyles((theme) => ({
   selectOptions: {
@@ -40,12 +57,22 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#052E5E",
     height: "15px",
   },
+  paper: {
+    position: "absolute",
+    width: 600,
+    backgroundColor: theme.palette.background.paper,
+    border: "2px solid #000",
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
 }));
 
 export default function ChatHeader() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [authUser, setAuthUser] = useState(null)
+  const [authUser, setAuthUser] = useState(null);
+  const [modalStyle] = React.useState(getModalStyle);
+  const [open, setOpen] = React.useState(false);
 
   useEffect(() => {
     getAuthenticatedUser();
@@ -58,6 +85,21 @@ export default function ChatHeader() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleCloseP = () => {
+    setOpen(false);
+  };
+
+  const body = (
+    <div style={modalStyle} className={classes.paper}>
+      <Perfil />
+    </div>
+  );
+
   async function getAuthenticatedUser() {
     try {
       const response = await User.getAuthenticatedUser();
@@ -116,11 +158,19 @@ export default function ChatHeader() {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Ver perfil</MenuItem>
+                <MenuItem onClick={handleOpen}>Ver perfil</MenuItem>
                 <MenuItem onClick={handleClose}>
                   <Logout />
                 </MenuItem>
               </Menu>
+              <Modal
+                    open={open}
+                    onClose={handleCloseP}
+                    aria-labelledby="simple-modal-title"
+                    aria-describedby="simple-modal-description"
+                  >
+                    {body}
+                  </Modal>
             </FormControl>
           </Grid>
         </Grid>
