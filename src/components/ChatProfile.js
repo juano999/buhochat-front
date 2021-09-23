@@ -2,40 +2,64 @@ import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 import TextField from '@material-ui/core/TextField';
+import { useForm, Controller } from "react-hook-form"
 import api from "../api/index";
 import { useEffect, useState } from "react";
 import Button from "@material-ui/core/Button";
 import Image from "next/image";
-import ruta1 from "../../public/images/logo.jpeg";
-import PersonAddIcon from "@material-ui/icons/PersonAdd";
+import defaultImageProfile from "../../public/images/imgperfil.png";
+
 
 
 const ChatProfile = () => {
   const [userA, setUserA] = useState([]);
   const [userI, setUserI] = useState([]);
+  const [idUserA, setidUserA] = useState(0);
+  const [result, setResult] = useState([]);
+    const onSubmit = (formData) => setResult(JSON.stringify(formData))
+    const {
+      handleSubmit,
+      formState: { errors },
+      reset,
+      control,
+  } = useForm();
+
+
+  const onFinish = (formData) => {
+    console.log('Busqueda', formData);
+}
 
 
   async function UserInformation() {
     try {
       const usuario = await api.get(`/user`);
+      console.log("usuarioIDlogueado", usuario.data);
       const idUser = usuario.data.id;
+      setidUserA(idUser);
       const dataUser = await api.get(`/users/${idUser}`);
       const interest = await api.get(`/interests/${idUser}`);
-      setUserA(dataUser.data);
-      console.log(userA);
       setUserI(interest.data);
+      setUserA(dataUser.data);
+      console.log("usaurioLogueado", userA);
+      
     } catch (e) {
       console.log(e)
     }
+  }
+
+  async function newInterest() {
+    const newInt = document.getElementById("interestUser").value;
+    const newJsonInt = '{"text":"newInt"}';
+    var valueIn = JSON.parse(newJsonInt);
+    var jsonFormateado = JSON.stringify(valueIn, null, '\t');
+    console.log("interes", jsonFormateado);
+    const response = await api.post(`/interests/${idUserA}`, jsonFormateado);
   }
 
   useEffect(() => {
     UserInformation();
 }, [])
 
-  const handleUpdate = () => {
-    
-  };
 
   const handleUpdatePhoto = () => {
     
@@ -53,18 +77,20 @@ const ChatProfile = () => {
         <Grid item xs={6} md={8}>
           {userA.image ? 
           <Image
-          src={ruta1} // Route of the image file
+          src={userA.image} // Route of the image file
           height={180} // Desired size with correct aspect ratio
           width={150} // Desired size with correct aspect ratio
           alt="Logo"
-        /> : <PersonAddIcon fontSize="large"
-        height={180}
-        width={150}
-        ></PersonAddIcon>}
+        /> : <Image
+        src={defaultImageProfile} // Route of the image file
+        height={180} // Desired size with correct aspect ratio
+        width={150} // Desired size with correct aspect ratio
+        alt="Logo"
+      />}
             
             <Button onClick={handleUpdatePhoto}>Actualizar foto de perfil</Button>
             <TextField
-          id="filled-read-only-input"
+          disabled 
           label={userA.email}
           InputProps={{
             readOnly: true,
@@ -74,45 +100,16 @@ const ChatProfile = () => {
         </Grid>
         <Grid item xs={6} md={4}>
         <TextField
-        disabled 
-        defaultValue= {userA.name}
-          id="filled-read-only-input"
-          label={userA.name}
+        disabled
+          label={userA.nickName}
           InputProps={{
             readOnly: true,
           }}
           variant="filled"
         />
         <TextField
-          id="filled-read-only-input"
-          label={userA.lastName}
-          InputProps={{
-            readOnly: true,
-          }}
-          variant="filled"
-        />
-        <TextField
-          id="filled-read-only-input"
-          label="Edad"
-          defaultValue=""
-          InputProps={{
-            readOnly: true,
-          }}
-          variant="filled"
-        />
-        <TextField
-          id="filled-read-only-input"
-          label="Apodo"
-          defaultValue={userA.nickName}
-          InputProps={{
-            readOnly: true,
-          }}
-          variant="filled"
-        />
-        <TextField
-          id="filled-read-only-input"
-          label="Email"
-          defaultValue={userI.text}
+        disabled
+          label={userA.career}
           InputProps={{
             readOnly: true,
           }}
@@ -121,20 +118,24 @@ const ChatProfile = () => {
 
         </Grid>
       </Grid>
-      <Grid item xs={12}>
-      <TextField
-          id="filled-read-only-input"
-          label="Email"
-          defaultValue={userA.email}
-          InputProps={{
-            readOnly: true,
-          }}
-          variant="filled"
-        />
-        </Grid>
-        <Grid item xs={6}>
-        <Button onClick={handleUpdate}>Guardar</Button>
-        </Grid>
+      <form onSubmit={handleSubmit(onFinish)}>
+                        <Controller
+                            name="text"
+                            control={control}
+                            defaultValue=""
+                            render={({ field }) => (
+                              <TextField
+                              {...field}
+                              required
+                              label={userI.text}
+                              variant="filled"
+                              type="text"
+                            />
+                            )}
+                        />
+                        <p></p>
+                        <Button variant="contained" type="submit"><SearchIcon /> Guardar</Button>
+                    </form>
     </Grid>
   );
 };
