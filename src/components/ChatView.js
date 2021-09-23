@@ -125,7 +125,7 @@ const ChatView = ({ chat }) => {
 
     useEffect(() => {
         getAuthenticatedUser()
-        console.log("chat", chat)
+
     }, [])
 
 
@@ -133,12 +133,12 @@ const ChatView = ({ chat }) => {
 
     async function messagesPopulation(url) {
         try {
-            console.log("aquichat", url)
+
             let messages = [];
             const res = await api.get(url);
             console.log(res);
             messages = await res.data
-            console.log("mensajes", res.data)
+
             //setMessages(messages)
             getUserShowed();
             return messages;
@@ -195,7 +195,7 @@ const ChatView = ({ chat }) => {
     async function getAuthenticatedUser() {
         try {
             const response = await User.getAuthenticatedUser();
-            console.log("response user", response);
+
             setAuthUser(response.data)
             return response;
         } catch (error) {
@@ -221,16 +221,22 @@ const ChatView = ({ chat }) => {
     }
 
     async function getUserShowed() {
-        let res = null;
-        console.log("authuser", authUser);
-        if (authUser.id === chat.user_id_1) {
-            res = await api.get(`users/${chat.user_id_2}`);
-        } else {
-            res = await api.get(`users/${chat.user_id_1}`);
+        try {
+            let res = null;
+            console.log("authuser", authUser);
+            if (authUser.id === chat.user_id_1) {
+                res = await api.get(`users/${chat.user_id_2}`);
+            } else {
+                res = await api.get(`users/${chat.user_id_1}`);
 
+            }
+            console.log("userShowed", res.data)
+            setUserShowed(res.data);
+
+
+        } catch (e) {
+            console.log("error UserShowed", e)
         }
-        console.log("userShowed", res.data)
-        setUserShowed(res.data);
     }
 
     if (!chat || !data) {

@@ -133,7 +133,7 @@ export default function ChatBody() {
         <Divider className={classes.divider} />
 
         <Grid item xs={12} container spacing={0} className={classes.list}>
-          {stateComponent === 1 ? <ChatList onChangeUser={handleChangeUser} /> : <ChatListFriends />}
+          {stateComponent === 1 ? <ChatList onChangeUser={handleChangeUser} /> : <ChatListFriends onChangeUser={handleChangeUser} />}
 
         </Grid>
 
