@@ -86,7 +86,11 @@ const useStyles = makeStyles((theme) => ({
     },
     stylesMessage: {
         fontSize: "0.6em",
-    }
+    },
+    list: {
+        overflowY: "scroll",
+        height: "77vh"
+    },
 }));
 const ChatView = ({ chat }) => {
     const {
@@ -261,7 +265,7 @@ const ChatView = ({ chat }) => {
                     </Button>
                 </Grid>
             </Grid>
-            <Grid container>
+            <Grid container className={classes.list}>
                 {data.map((message) => (
                     <Grid md={12} key={message.id} >
                         <Box className={message.user_id === authUser.id ? classes.messagesFromMe : classes.messagesFromOther}>
