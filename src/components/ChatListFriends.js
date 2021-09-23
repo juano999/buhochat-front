@@ -45,76 +45,88 @@ const useStyles = makeStyles((theme) => ({
 
 const ChatListFriends = ({ onChangeUser }) => {
     const classes = useStyles();
-    //const router = useRouter();
-    //const [users, setUsers] = useState([]);
-    //const [chats, setChats] = useState([]);
-    //const [newRandom, setNewRandom] = useState(0);
 
-    const [friends, setFriends] = useState([]);
+
+    const [chats, setChats] = useState([]);
+
+    const [authUser, setAuthUser] = useState();
+    const [userShowed, setUserShowed] = useState(null);
 
 
     useEffect(() => {
-        const getData = async () => {
-            const res = await api.get("/chats")
-            console.log('Respuesta amigos:', res.data)
-            //const chats = res.data;
-            setFriends(res.data);
-        };
 
-        getData();
-    },[]);
+        chatsPopulation();
+        console.log("chatsConNick", chats)
 
-    //useEffect(() => {
 
-    //chatsPopulation();
-    //}, [newRandom]);
+    }, [onChangeUser]);
 
-    //async function randomUser() {
-    //try {
-    //const res = await api.get(`/users/random`);
-    //console.log(res);
-    //const newUser = res.data
-    //} catch (e) {
-    //console.log(e)
-    //}
-    //}
-    //const handleNextUser = () => {
-    //randomUser();
-    //if (newRandom == 0) {
-    //setNewRandom(1);
-    //}
-    //if (newRandom == 1) {
-    //setNewRandom(0);
-    //}
-    //}
-    //async function chatsPopulation() {
-    //const res = await api.get("/chats")
-    //console.log(res.data)
-    //const chats = res.data;
-    //setChats(res.data);
+    useEffect(() => {
+        getAuthenticatedUser();
 
-    // }
+    }, [])
 
-    if(!friends) {
-        return "Cargando amigos..."
+
+
+
+    async function chatsPopulation() {
+        try {
+            const res = await api.get("/boolTrue");
+            const chats = res.data;
+            setChats(chats);
+
+        } catch (e) {
+            console.log("error chatsPopulation", e)
+        }
+
+
     }
+
+    async function getAuthenticatedUser() {
+        try {
+            const response = await User.getAuthenticatedUser();
+            console.log("response user", response);
+            setAuthUser(response.data)
+            return response;
+        } catch (error) {
+
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+                return error.response;
+            } else if (error.request) {
+                // The request was made but no response was received
+                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                // http.ClientRequest in node.js
+                console.log(error.request);
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log("Error", error.message);
+            }
+            console.log(error.config);
+        }
+    }
+
 
     return (
         <Grid container>
-            <Grid  md={12}  spacing={0} className={classes.list}>
+            <Grid md={12} spacing={0} className={classes.list}>
                 {
-                    friends.map((friend) => (
+                    chats.map((friend) => (
                         <Grid md={12} key={friend.id}>
-                            <Grid xs={12} md={12} className={classes.contactsPosition}>
-                            <PersonIcon fontSize="large"></PersonIcon>
-                            {friend.id}
+                            <Grid xs={12} md={12} className={classes.contactsPosition} onClick={() => onChangeUser(friend)}>
+                                <PersonIcon fontSize="large"></PersonIcon>
+                                {friend.id}
                             </Grid>
                         </Grid>
                     ))
                 }
 
             </Grid>
-            
+
         </Grid>
         //<Grid container >
         // <Grid spacing={0} md={12} className={classes.list}>

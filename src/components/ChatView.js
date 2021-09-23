@@ -105,15 +105,15 @@ const ChatView = ({ chat }) => {
     const [result, setResult] = useState(null);
     const [userShowed, setUserShowed] = useState(null);
     const [authUser, setAuthUser] = useState();
-    // const { data, error } = useSWR(
-    //     `/chat/${chat.id}/messages`,
-    //     messagesPopulation,
-    //     { refreshInterval: 5000 }
-    // );
+    const { data, error } = useSWR(
+        chat ? `/chat/${chat.id}/messages` : null,
+        messagesPopulation,
+        { refreshInterval: 2000 }
+    );
 
     useEffect(() => {
         console.log("chatTOSHOW", chat);
-        messagesPopulation(chat);
+
         if (chat && !result) {
 
             getUserShowed();
@@ -125,25 +125,27 @@ const ChatView = ({ chat }) => {
 
     useEffect(() => {
         getAuthenticatedUser()
-        console.log("chat", chat)
+
     }, [])
 
 
 
 
-    async function messagesPopulation(chat) {
+    async function messagesPopulation(url) {
         try {
-            console.log("aquichat", chat)
+
             let messages = [];
-            const res = await api.get(`/chat/${chat.id}/messages`);
+            const res = await api.get(url);
             console.log(res);
             messages = await res.data
-            console.log("mensajes", res.data)
-            setMessages(messages)
+
+            //setMessages(messages)
+            getUserShowed();
             return messages;
         } catch (e) {
             console.log(e)
         }
+
 
     }
 
@@ -193,7 +195,7 @@ const ChatView = ({ chat }) => {
     async function getAuthenticatedUser() {
         try {
             const response = await User.getAuthenticatedUser();
-            console.log("response user", response);
+
             setAuthUser(response.data)
             return response;
         } catch (error) {
@@ -219,19 +221,25 @@ const ChatView = ({ chat }) => {
     }
 
     async function getUserShowed() {
-        let res = null;
-        console.log("authuser", authUser);
-        if (authUser.id === chat.user_id_1) {
-            res = await api.get(`users/${chat.user_id_2}`);
-        } else {
-            res = await api.get(`users/${chat.user_id_1}`);
+        try {
+            let res = null;
+            console.log("authuser", authUser);
+            if (authUser.id === chat.user_id_1) {
+                res = await api.get(`users/${chat.user_id_2}`);
+            } else {
+                res = await api.get(`users/${chat.user_id_1}`);
 
+            }
+            console.log("userShowed", res.data)
+            setUserShowed(res.data);
+
+
+        } catch (e) {
+            console.log("error UserShowed", e)
         }
-        console.log("userShowed", res.data)
-        setUserShowed(res.data);
     }
 
-    if (!chat) {
+    if (!chat || !data) {
         return <div className={classes.containerInformation}>
             <Grid xs={12} className={classes.textInformation}>
                 <h2>Bienvenido a BuhoChat!</h2>
@@ -254,7 +262,7 @@ const ChatView = ({ chat }) => {
                 </Grid>
             </Grid>
             <Grid container>
-                {messages.map((message) => (
+                {data.map((message) => (
                     <Grid md={12} key={message.id} >
                         <Box className={message.user_id === authUser.id ? classes.messagesFromMe : classes.messagesFromOther}>
 

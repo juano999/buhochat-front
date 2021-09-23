@@ -107,7 +107,7 @@ const useStyles = makeStyles((theme) => ({
 export default function ChatBody() {
   const classes = useStyles();
   const [chatToShow, setChatToShow] = useState(null);
-
+  const [stateComponent, setStateComponent] = useState(1);
 
   // handleChangeUser
   // setUserToShow(idUser)
@@ -115,7 +115,9 @@ export default function ChatBody() {
 
     setChatToShow(chat)
   }
-
+  const handleChangeComponent = (state) => {
+    setStateComponent(state);
+  }
 
   return (
 
@@ -123,16 +125,15 @@ export default function ChatBody() {
     <Grid container spacing={0} className={classes.root}>
       <Grid container item xs={2} md={4} className={classes.selectChatBox}>
         <Grid item xs={6} md={6} className={classes.colorAll}>
-          <Button>Todos </Button>
+          <Button onClick={() => handleChangeComponent(1)}>Todos </Button>
         </Grid>
         <Grid item xs={6} md={6} className={classes.colorFriends}>
-          <Button >Amigos </Button>
+          <Button onClick={() => handleChangeComponent(2)}>Amigos </Button>
         </Grid>
         <Divider className={classes.divider} />
 
         <Grid item xs={12} container spacing={0} className={classes.list}>
-          <ChatList onChangeUser={handleChangeUser} />
-          {/*<ChatListFriends/>*/}
+          {stateComponent === 1 ? <ChatList onChangeUser={handleChangeUser} /> : <ChatListFriends onChangeUser={handleChangeUser} />}
 
         </Grid>
 
