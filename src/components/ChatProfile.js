@@ -134,7 +134,7 @@ const ChatProfile = () => {
                             )}
                         />
                         <p></p>
-                        <Button variant="contained" type="submit"><SearchIcon /> Guardar</Button>
+                        <Button variant="contained" type="submit"> Guardar</Button>
                     </form>
     </Grid>
   );

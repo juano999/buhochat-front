@@ -17,6 +17,23 @@ import { set } from "js-cookie";
 import useSWR from "swr";
 import { FormatAlignJustify } from "@material-ui/icons";
 import { styled } from '@material-ui/core/styles';
+import ChatProfile2 from '@/components/ChatProfile2';
+import Modal from "@material-ui/core/Modal";
+
+function rand() {
+    return Math.round(Math.random() * 20) - 10;
+  }
+  
+  function getModalStyle() {
+    const top = 50 + rand();
+    const left = 50 + rand();
+  
+    return {
+      top: `${top}%`,
+      left: `${left}%`,
+      transform: `translate(-${top}%, -${left}%)`,
+    };
+  }
 
 
 const schema = yup.object().shape({
@@ -108,6 +125,8 @@ const ChatView = ({ chat }) => {
     const [result, setResult] = useState(null);
     const [userShowed, setUserShowed] = useState(null);
     const [authUser, setAuthUser] = useState();
+    const [modalStyle] = React.useState(getModalStyle);
+    const [open, setOpen] = React.useState(false);
     // const { data, error } = useSWR(
     //     `/chat/${chat.id}/messages`,
     //     messagesPopulation,
@@ -131,7 +150,19 @@ const ChatView = ({ chat }) => {
         console.log("chat", chat)
     }, [])
 
+    const handleOpen = () => {
+        setOpen(true);
+      };
 
+      const handleClose = () => {
+        setOpen(false);
+      };
+
+      const body = (
+        <div style={modalStyle}>
+          <ChatProfile2 valueUser={userShowed}/>
+        </div>
+      );
 
 
     async function messagesPopulation(chat) {
@@ -157,7 +188,7 @@ const ChatView = ({ chat }) => {
                 chat_id: chat.id,
             };
             console.log(formData);
-            console.log("Datos de mensaje", messgeData);
+            console.log("Datos de mensaje", messageData);
             const response = await api.post('/messages', messageData);
             console.log("response", response.data);
             setResult("Se envió un mensaje");
@@ -246,7 +277,7 @@ const ChatView = ({ chat }) => {
         <Grid className={classes.container}>
             <Grid container className={classes.userPreview}>
                 <Grid md={11} className={classes.nicknameStyles}>{userShowed ?
-                    <div ><h3>
+                    <div onClick={handleOpen}><h3>
                         {userShowed.nickName}
                     </h3>
                     </div> : <label></label>}</Grid>
@@ -311,6 +342,14 @@ const ChatView = ({ chat }) => {
                         </Button>
                     </Grid>
                 </Grid>
+                <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="simple-modal-title"
+                    aria-describedby="simple-modal-description"
+                  >
+                    {body}
+                  </Modal>
             </form>
 
 
