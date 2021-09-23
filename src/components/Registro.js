@@ -22,6 +22,12 @@ const schema = yup.object().shape({
     .string()
     .oneOf([yup.ref("password"), null], "Las claves no coinciden")
     .required("Este campo obligatorio"),
+    career: yup
+    .string()
+    .required("Este campo obligatorio"),
+    interest: yup
+    .string()
+    .required("Este campo obligatorio"),
 });
 
 const useStyles = makeStyles((theme) => ({
@@ -121,6 +127,38 @@ const RegisterPage = () => {
               <TextField
                 {...field}
                 label="NickName"
+                variant="outlined"
+                size="small"
+              />
+            )}
+          />
+          <p>{errors.name?.message}</p>
+        </div>
+        <div>
+          <Controller
+            name="career"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Carrera"
+                variant="outlined"
+                size="small"
+              />
+            )}
+          />
+          <p>{errors.name?.message}</p>
+        </div>
+        <div>
+          <Controller
+            name="interest"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Interes"
                 variant="outlined"
                 size="small"
               />

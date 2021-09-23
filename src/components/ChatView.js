@@ -156,6 +156,7 @@ const ChatView = ({ chat }) => {
                 chat_id: chat.id,
             };
             console.log(formData);
+            console.log("Datos de mensaje", messageData);
             const response = await api.post('/messages', messageData);
             console.log("response", response.data);
             setResult("Se envió un mensaje");
