@@ -37,9 +37,6 @@ const useStyles = makeStyles((theme) => ({
         width: "100%"
 
     },
-    userPreview_icons: {
-        float: "right",
-    },
     messageSender: {
         bottom: "0",
         position: "absolute"
@@ -108,15 +105,15 @@ const ChatView = ({ chat }) => {
     const [result, setResult] = useState(null);
     const [userShowed, setUserShowed] = useState(null);
     const [authUser, setAuthUser] = useState();
-    // const { data, error } = useSWR(
-    //     `/chat/${chat.id}/messages`,
-    //     messagesPopulation,
-    //     { refreshInterval: 5000 }
-    // );
+    const { data, error } = useSWR(
+        chat ? `/chat/${chat.id}/messages` : null,
+        messagesPopulation,
+        { refreshInterval: 2000 }
+    );
 
     useEffect(() => {
         console.log("chatTOSHOW", chat);
-        messagesPopulation(chat);
+
         if (chat && !result) {
 
             getUserShowed();
@@ -134,19 +131,21 @@ const ChatView = ({ chat }) => {
 
 
 
-    async function messagesPopulation(chat) {
+    async function messagesPopulation(url) {
         try {
-            console.log("aquichat", chat)
+            console.log("aquichat", url)
             let messages = [];
-            const res = await api.get(`/chat/${chat.id}/messages`);
+            const res = await api.get(url);
             console.log(res);
             messages = await res.data
             console.log("mensajes", res.data)
-            setMessages(messages)
+            //setMessages(messages)
+            getUserShowed();
             return messages;
         } catch (e) {
             console.log(e)
         }
+
 
     }
 
@@ -233,7 +232,7 @@ const ChatView = ({ chat }) => {
         setUserShowed(res.data);
     }
 
-    if (!chat) {
+    if (!chat || !data) {
         return <div className={classes.containerInformation}>
             <Grid xs={12} className={classes.textInformation}>
                 <h2>Bienvenido a BuhoChat!</h2>
@@ -256,7 +255,7 @@ const ChatView = ({ chat }) => {
                 </Grid>
             </Grid>
             <Grid container>
-                {messages.map((message) => (
+                {data.map((message) => (
                     <Grid md={12} key={message.id} >
                         <Box className={message.user_id === authUser.id ? classes.messagesFromMe : classes.messagesFromOther}>
 
