@@ -7,6 +7,8 @@ import Grid from "@material-ui/core/Grid";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import api from "../api/index";
+import useSWR from "swr";
+import { Box } from "@material-ui/core";
 
 const fetcher = (url) => api.get(url).then((res) => res.data);
 
@@ -51,7 +53,7 @@ const ChatList = ({ onChangeUser }) => {
   useEffect(() => {
 
     chatsPopulation();
-  }, [newRandom]);
+  }, [newRandom, onChangeUser]);
 
   async function randomUser() {
     try {
@@ -73,7 +75,7 @@ const ChatList = ({ onChangeUser }) => {
   }
   async function chatsPopulation() {
     const res = await api.get("/chats")
-    console.log('Respuesta Aleatorio: ',res.data)
+    console.log('Respuesta Aleatorio: ', res.data)
     const chats = res.data;
     setChats(res.data);
 
@@ -85,7 +87,8 @@ const ChatList = ({ onChangeUser }) => {
         {chats.map((chat) => (
           <Grid md={12} key={chat.id} >
             <Grid item xs={12} md={12} className={classes.contactsPosition} onClick={() => onChangeUser(chat)}>
-              <PersonIcon fontSize="large"></PersonIcon> {chat.user_id_2}
+              <PersonIcon fontSize="large"></PersonIcon> {chat.user_id_2} {chat.lastMessage}
+
             </Grid>
 
           </Grid>
