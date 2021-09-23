@@ -1,4 +1,3 @@
-
 import api from "src/api";
 import React from "react";
 import { useEffect, useState } from "react";
@@ -16,9 +15,16 @@ import { useForm, Controller } from "react-hook-form";
 import User from "../api/user";
 import { set } from "js-cookie";
 import useSWR from "swr";
+import { FormatAlignJustify } from "@material-ui/icons";
+import { styled } from '@material-ui/core/styles';
+
 
 const schema = yup.object().shape({
     text: yup.string().required(),
+});
+
+const Input = styled('input')({
+    display: 'none',
 });
 
 const useStyles = makeStyles((theme) => ({
@@ -48,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
         margin: "10px",
         borderRadius: "11px",
         maxWidth: "80%",
+        border: "solid 2px"
     },
     messagesFromOther: {
         textAlign: "left",
@@ -59,6 +66,29 @@ const useStyles = makeStyles((theme) => ({
         margin: "10px",
         borderRadius: "11px",
         maxWidth: "80%",
+        border: "solid 2px"
+    },
+    containerInformation: {
+        width: "100%",
+        display: "flex",
+        alignItems: "center",
+    },
+    textInformation: {
+        textAlign: "center",
+    },
+    colortextfield: {
+        width: "730px",
+    },
+    nicknameStyles: {
+        paddingLeft: "10px",
+    },
+    userPreview_icons: {
+        textAlign: "right",
+        paddingRight: "10px",
+        paddingTop: "5px",
+    },
+    stylesMessage: {
+        fontSize: "0.6em",
     }
 }));
 const ChatView = ({ chat }) => {
@@ -204,19 +234,25 @@ const ChatView = ({ chat }) => {
     }
 
     if (!chat) {
-
-        return "Seleccione a una persona con la que quiera Chatear o Presiona el Boton << Nuevo Usuario >> para Chatear con alguien aleatorio";
+        return <div className={classes.containerInformation}>
+            <Grid xs={12} className={classes.textInformation}>
+                <h2>Bienvenido a BuhoChat!</h2>
+                <h2>Seleccione a una persona con la que quiera chatear o presiona el botón Nuevo Usuario para Chatear con alguien aleatorio</h2>
+            </Grid>
+        </div>
     }
     return (
         <Grid className={classes.container}>
             <Grid container className={classes.userPreview}>
-                <Grid md={10}>{userShowed ?
-                    <label>
+                <Grid md={11} className={classes.nicknameStyles}>{userShowed ?
+                    <div ><h3>
                         {userShowed.nickName}
-                    </label> : <label></label>}</Grid>
-                <Grid md={2} className={classes.userPreview_icons}>
-                    <PersonAddIcon fontSize="large"></PersonAddIcon>
-                    <MoreVertIcon fontSize="large"></MoreVertIcon>
+                    </h3>
+                    </div> : <label></label>}</Grid>
+                <Grid md={1} className={classes.userPreview_icons}>
+                    <Button type="submit" variant="outlined">
+                        <PersonAddIcon></PersonAddIcon>
+                    </Button>
                 </Grid>
             </Grid>
             <Grid container>
@@ -227,8 +263,8 @@ const ChatView = ({ chat }) => {
                             <div>
                                 {message.text}
                             </div>
-                            <div>
-                                {message.updated_at}
+                            <div className={classes.stylesMessage}>
+                                {message.created_at}
                             </div>
                         </Box>
                     </Grid>
@@ -247,7 +283,7 @@ const ChatView = ({ chat }) => {
                                 <TextField
                                     {...field}
                                     className={classes.colortextfield}
-                                    label="text"
+                                    label="Escriba un mensaje aquí"
                                     variant="filled"
                                     type="text"
                                 />
@@ -256,9 +292,18 @@ const ChatView = ({ chat }) => {
                         />
 
                     </Grid>
-                    <Grid md={2}>
-
-                        <AttachFileIcon></AttachFileIcon>
+                    <Grid md={1}>
+                        {/*<Button component="span" variant="upload">
+                            <AttachFileIcon fontSize="large"></AttachFileIcon>
+                            </Button>*/}
+                        <label htmlFor="contained-button-file">
+                            <Input accept="image/*" id="contained-button-file" multiple type="file" />
+                            <Button variant="contained" component="span">
+                                <AttachFileIcon fontSize="large"></AttachFileIcon>
+                            </Button>
+                        </label>
+                    </Grid>
+                    <Grid md={1}>
                         <Button type="submit" variant="contained">
 
                             <SendIcon fontSize="large"></SendIcon>

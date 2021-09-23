@@ -1,6 +1,5 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
 import PersonIcon from "@material-ui/icons/Person";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
@@ -76,7 +75,7 @@ const ChatList = ({ onChangeUser }) => {
   }
   async function chatsPopulation() {
     const res = await api.get("/chats")
-    console.log("chats", res.data)
+    console.log('Respuesta Aleatorio: ', res.data)
     const chats = res.data;
     setChats(res.data);
 
