@@ -14,6 +14,7 @@ import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import User from "../api/user";
 import { set } from "js-cookie";
+import useSWR from "swr";
 import { FormatAlignJustify } from "@material-ui/icons";
 import { styled } from '@material-ui/core/styles';
 
@@ -99,21 +100,28 @@ const ChatView = ({ chat }) => {
     } = useForm({
         resolver: yupResolver(schema),
     });
+
     const classes = useStyles();
     const [messages, setMessages] = useState([]);
     const [chats, setChats] = useState([]);
     const onSubmit = (formData) => setResult(JSON.stringify(formData));
-    const [result, setResult] = useState("");
+    const [result, setResult] = useState(null);
     const [userShowed, setUserShowed] = useState(null);
     const [authUser, setAuthUser] = useState();
+    // const { data, error } = useSWR(
+    //     `/chat/${chat.id}/messages`,
+    //     messagesPopulation,
+    //     { refreshInterval: 5000 }
+    // );
 
     useEffect(() => {
         console.log("chatTOSHOW", chat);
         messagesPopulation(chat);
-        if (chat) {
+        if (chat && !result) {
 
             getUserShowed();
         }
+        //console.log("dataFromSWR", data)
 
 
     }, [chat, result])
@@ -124,15 +132,18 @@ const ChatView = ({ chat }) => {
     }, [])
 
 
+
+
     async function messagesPopulation(chat) {
         try {
-
+            console.log("aquichat", chat)
             let messages = [];
             const res = await api.get(`/chat/${chat.id}/messages`);
             console.log(res);
             messages = await res.data
             console.log("mensajes", res.data)
             setMessages(messages)
+            return messages;
         } catch (e) {
             console.log(e)
         }
@@ -148,9 +159,14 @@ const ChatView = ({ chat }) => {
             console.log(formData);
             const response = await api.post('/messages', messageData);
             console.log("response", response.data);
-
-
             setResult("Se envió un mensaje");
+
+            //update de lastmessage en chat
+            const updateData = {
+                lastMessage: formData.text,
+            };
+            const updateRes = await api.put(`/chats/${chat.id}`, updateData)
+            console.log("response lastMessage", updateRes.data);
 
             reset();
             // router.push(Routes.HOME);
