@@ -37,9 +37,6 @@ const useStyles = makeStyles((theme) => ({
         width: "100%"
 
     },
-    userPreview_icons: {
-        float: "right",
-    },
     messageSender: {
         bottom: "0",
         position: "absolute"
@@ -157,7 +154,7 @@ const ChatView = ({ chat }) => {
                 chat_id: chat.id,
             };
             console.log(formData);
-            console.log("Datos de mensaje", messgeData);
+            console.log("Datos de mensaje", messageData);
             const response = await api.post('/messages', messageData);
             console.log("response", response.data);
             setResult("Se envió un mensaje");
