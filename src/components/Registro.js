@@ -130,6 +130,22 @@ const RegisterPage = () => {
         </div>
         <div>
           <Controller
+            name="career"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Carrera"
+                variant="outlined"
+                size="small"
+              />
+            )}
+          />
+          <p>{errors.name?.message}</p>
+        </div>
+        <div>
+          <Controller
             name="password"
             control={control}
             defaultValue=""
