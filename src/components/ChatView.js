@@ -89,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
     },
     list: {
         overflowY: "scroll",
-        height: "77vh"
+        height: "72vh"
     },
 }));
 const ChatView = ({ chat }) => {
@@ -321,9 +321,6 @@ const ChatView = ({ chat }) => {
                     </Grid>
                 </Grid>
             </form>
-
-
-
         </Grid>
     );
 }
