@@ -7,11 +7,7 @@ const Logout = () => {
 
   const handleLogout = () => {
     logout();
-    try {
-      const res = api.delete("/deleteFalse")
-    } catch (e) {
-      console.log("error logout", e)
-    }
+
   };
 
   return (

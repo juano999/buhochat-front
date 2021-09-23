@@ -71,7 +71,7 @@ const ChatList = ({ onChangeUser }) => {
   async function randomUser() {
     try {
       const res = await api.get(`/users/random`);
-      console.log(res);
+      console.log("newUser", res.data);
       const newUser = res.data
     } catch (e) {
       console.log(e)
@@ -87,10 +87,10 @@ const ChatList = ({ onChangeUser }) => {
     }
   }
   async function chatsPopulation() {
-    const res = await api.get("/boolFalse");
+    const res = await api.get("/chats");
     const chats = res.data;
+    console.log("chats", res)
     setChats(chats);
-
 
   }
 
@@ -121,13 +121,7 @@ const ChatList = ({ onChangeUser }) => {
       console.log(error.config);
     }
   }
-  async function getUserShowed(idUser) {
-    let res = null;
-    res = await api.get(`users/${idUser}`);
-    console.log("res.data.nick", res.data.nickName)
-    return res.data.nickName;
 
-  }
 
   return (
     <Grid container >
